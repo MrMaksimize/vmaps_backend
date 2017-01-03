@@ -3,7 +3,7 @@ var express = require('express');
 var ShareDB = require('sharedb');
 var WebSocket = require('ws');
 var WebSocketJSONStream = require('websocket-json-stream');
-
+var bodyParser = require('body-parser')
 
 var backend = new ShareDB();
 createDoc(startServer);
@@ -31,11 +31,27 @@ function startServer() {
 
     var app = express();
 
+
+    app.use( bodyParser.json() );       // to support JSON-encoded bodies
+    app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+        extended: true
+    }));
+
+
     app.set('port', (process.env.PORT || 8080));
 
 
-    app.get('/', function(request, response) {
-        response.send('ok');
+    app.post('/receive-alexa', function(req, res) {
+        console.log(req)
+        res.json({
+            version: '1.0',
+            response: {
+                outputSpeech: {
+                    type: 'PlainText',
+                    text: 'HI'
+                },
+            }
+        });
     });
 
 
