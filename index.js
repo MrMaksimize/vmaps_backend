@@ -43,12 +43,13 @@ function startServer() {
 
     app.post('/receive-alexa', function(req, res) {
         console.log(req)
+        plainText = req.body.request.intent.slots.Text.value;
         res.json({
             version: '1.0',
             response: {
                 outputSpeech: {
                     type: 'PlainText',
-                    text: 'HI'
+                    text: plainText
                 },
             }
         });
